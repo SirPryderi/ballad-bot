@@ -9,6 +9,7 @@ from src.reddit_bot import RedditBot
 def run_from_file():
   comment_processor = CommentProcessor()
   dir = 'test_data/'
+  print(f"\nDetecting poems in {dir}")
   entries = os.listdir(dir)
   for entry in entries:
     with open(dir + '/' + entry, 'r') as f:

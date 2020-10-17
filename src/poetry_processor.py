@@ -2,53 +2,23 @@ import pronouncing as pr
 
 two_to_one_stress = {ord('2'): u'1'}
 
-class PoetryProcessor:
-  @staticmethod
-  def is_ballad(tokenized_text):
-    return True
 
+class PoetryProcessor:
   @classmethod
-  def identify_structure(cls, tokenized_text, syllables_count, syllables_total):
-    viable_structures = []
+  def identify_form_from_syllables(cls, tokenized_text, forms):
+    syllables_count = cls.get_syllables_count(tokenized_text)
+    syllables_total = sum(syllables_count)
+
+    candidates = {}
 
     if syllables_total == 0: return []
-    
-    if syllables_total % 28 == 0:
-      failed = False
-      verses = []
-      verses_syllables = []
-      
-      word_index = 0
-      verses_count = syllables_total // 28 * 4
 
-      for verse_count in range(verses_count):
-        verse_count = (verse_count % 4) + 1
-        if (verse_count == 1 or verse_count == 3):
-          expected_syllables_count = 8
-        if (verse_count == 2 or verse_count == 4):
-          expected_syllables_count = 6
-        
-        verse = []
-        verse_syllables = []
+    for form in forms:
+      result = form.construct(tokenized_text, syllables_count, syllables_total)
+      if result:
+        candidates[form.name] = result
 
-        verse_syllables_count = 0
-
-        while verse_syllables_count < expected_syllables_count:
-          verse.append(tokenized_text[word_index])
-          verse_syllables.append(syllables_count[word_index])
-          verse_syllables_count = verse_syllables_count + syllables_count[word_index]
-          word_index = word_index + 1
-      
-        if verse_syllables_count != expected_syllables_count:
-          failed = True
-          break
-
-        verses.append(verse)
-
-      if not failed:
-        viable_structures.append(["ballad", verses])
-
-    return viable_structures
+    return candidates
 
   @staticmethod
   def get_syllables_count(tokenized_text):

@@ -1,9 +1,13 @@
 import re
 import logging
 from src.poetry_processor import PoetryProcessor
+from src.poetic_form import PoeticForm
 
 
 class CommentProcessor:
+  def __init__(self):
+    self.forms = PoeticForm.load_forms('./forms')
+
   def tokenize_text(self, text):
     # TODO: we need need better tokenization here, this is way to makeshift.
     # remove new lines
@@ -16,26 +20,27 @@ class CommentProcessor:
     tokenized_text = preprocess_text.split()
     return tokenized_text
 
-  def write_poem(self, poem, author="Anonymous"):
+  def write_poem(self, poem, author=None, form=None):
+    if author == None:
+      author = "anonymous"
+    
     print("\n")
+
     for verse in poem:
       print(" ".join(verse))
 
-    print("\n —", author)
+    # TODO: support things like "two tercets by"
+
+    print(f"\n — a {form} by {author}")
 
   def process_text(self, text, author=None):
     try:
       tokenized_text = self.tokenize_text(text)
+      generated_forms = PoetryProcessor.identify_form_from_syllables(tokenized_text, self.forms)
 
-      syllables_count = PoetryProcessor.get_syllables_count(tokenized_text)
-      syllables_total = sum(syllables_count)
-
-      formats = PoetryProcessor.identify_structure(
-          tokenized_text, syllables_count, syllables_total)
-
-      if len(formats) != 0:
-        for format in formats:
-          self.write_poem(format[1], author)
+      if len(generated_forms) != 0:
+        for form, poem in generated_forms.items():
+          self.write_poem(poem, author, form)
 
     except Exception as ex:
       pass
