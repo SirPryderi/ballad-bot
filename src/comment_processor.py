@@ -26,11 +26,10 @@ class CommentProcessor:
       tokenized_text = self.tokenize_text(text)
       generated_poems = PoetryProcessor.identify_form_from_syllables(tokenized_text, self.forms)
 
-      if len(generated_poems) != 0:
-        for poem in generated_poems:
-          poem.author = author
-          print("\n")
-          print(poem)
+      for poem in generated_poems:
+        poem.author = author
+        print("\n")
+        print(poem)
 
     except Exception as ex:
       pass
