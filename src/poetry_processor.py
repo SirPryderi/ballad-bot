@@ -9,9 +9,9 @@ class PoetryProcessor:
     syllables_count = cls.get_syllables_count(tokenized_text)
     syllables_total = sum(syllables_count)
 
-    if syllables_total == 0: 
+    if syllables_total == 0:
       return
-    
+
     for form in forms:
       result = form.construct(tokenized_text, syllables_count, syllables_total)
       if result:
@@ -33,7 +33,7 @@ class PoetryProcessor:
       syllables_length = len(syllables)
       # Trick from (Ghazvininejad et al., 2016)
       if syllables_length > 2 and syllables[-3:] == '100':
-          syllables = '%s%s' % (syllables[:-1], '1')
+        syllables = '%s%s' % (syllables[:-1], '1')
       stresses.add(syllables)
 
     return stresses
@@ -58,22 +58,22 @@ class PoetryProcessor:
     # Iterate over words
     for word in tokenized_text:
         # Remaining syllables
-        remaining_syllables = len(pattern)
-        # Start looping over possible stress patterns of current word
-        found_pattern = False
-        for stress_pattern in cls.get_stresses(word):
-          pattern_length = len(stress_pattern)
-          # check whether the stress patterns match
-          if pattern_length <= remaining_syllables and pattern[0:pattern_length] == stress_pattern:
-            # if yes, reduce the target pattern and get to next word
-            pattern = pattern[pattern_length:]
-            found_pattern = True
-            break
-        # If no matching stress pattern was found for this word, return false
-        if not found_pattern:
-            return False
+      remaining_syllables = len(pattern)
+      # Start looping over possible stress patterns of current word
+      found_pattern = False
+      for stress_pattern in cls.get_stresses(word):
+        pattern_length = len(stress_pattern)
+        # check whether the stress patterns match
+        if pattern_length <= remaining_syllables and pattern[0:pattern_length] == stress_pattern:
+          # if yes, reduce the target pattern and get to next word
+          pattern = pattern[pattern_length:]
+          found_pattern = True
+          break
+      # If no matching stress pattern was found for this word, return false
+      if not found_pattern:
+        return False
     # If there are more syllables remaining (not counting the feminine rhyme)
     if len(pattern) > 1 or (not allow_feminine_rhyme and len(pattern) == 1):
-        return False
+      return False
     # Return the iambic pentameter
     return tokenized_text
