@@ -2,6 +2,7 @@ import os
 from src.poetry_processor import PoetryProcessor
 from src.poem import Poem
 
+
 class PoeticForm:
   def __init__(self, name, verses):
     self.name = name
@@ -40,40 +41,42 @@ class PoeticForm:
       syllables_count = PoetryProcessor.get_syllables_count(tokenized_text)
       syllables_total = sum(syllables_count)
 
-    if syllables_total % self.syllables_count == 0:
-      failed = False
-      verses = []
-      verses_syllables = []
+    if syllables_total % self.syllables_count != 0:
+      return False
 
-      word_index = 0
-      repetitions = syllables_total // self.syllables_count
-      verses_count = repetitions * self.verses_count
+    failed = False
+    verses = []
+    verses_syllables = []
 
-      for verse_index in range(verses_count):
-        if verse_index != 0 and verse_index % self.verses_count == 0:
-          verses.append("")
-        verse_index = (verse_index % self.verses_count)
+    word_index = 0
+    repetitions = syllables_total // self.syllables_count
+    verses_count = repetitions * self.verses_count
 
-        expected_syllables_count = len(self.verses[verse_index])
+    for verse_index in range(verses_count):
+      if verse_index != 0 and verse_index % self.verses_count == 0:
+        verses.append("")
+      verse_index = (verse_index % self.verses_count)
 
-        verse = []
-        verse_syllables = []
+      expected_syllables_count = len(self.verses[verse_index])
 
-        verse_syllables_count = 0
+      verse = []
+      verse_syllables = []
 
-        while verse_syllables_count < expected_syllables_count:
-          verse.append(tokenized_text[word_index])
-          verse_syllables.append(syllables_count[word_index])
-          verse_syllables_count = verse_syllables_count + syllables_count[word_index]
-          word_index = word_index + 1
+      verse_syllables_count = 0
 
-        if verse_syllables_count != expected_syllables_count:
-          failed = True
-          break
+      while verse_syllables_count < expected_syllables_count:
+        verse.append(tokenized_text[word_index])
+        verse_syllables.append(syllables_count[word_index])
+        verse_syllables_count = verse_syllables_count + syllables_count[word_index]
+        word_index = word_index + 1
 
-        verses.append(verse)
+      if verse_syllables_count != expected_syllables_count:
+        failed = True
+        break
 
-      if failed:
-        return False
+      verses.append(verse)
 
-      return Poem(verses, form=self, form_repetition=repetitions)
+    if failed:
+      return False
+
+    return Poem(verses, form=self, form_repetition=repetitions)
