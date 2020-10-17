@@ -1,0 +1,28 @@
+import praw
+import os
+import sys
+from dotenv import load_dotenv
+from src.comment_processor import CommentProcessor
+
+
+class RedditBot:
+  def __init__(self):
+    load_dotenv()
+
+    self.comment_processor = CommentProcessor()
+
+    self.reddit = praw.Reddit(
+        user_agent=os.getenv("USERNAME"),
+        client_id=os.getenv("CLIENT_ID"),
+        client_secret=os.getenv("CLIENT_SECRET"),
+        username=os.getenv("USERNAME"),
+        password=os.getenv("PASSWORD")
+    )
+
+  def monitor_reddit(self, subreddit_name):
+    subreddit = self.reddit.subreddit(subreddit_name)
+
+    print(f"Monitoring comments on r/{subreddit_name}")
+
+    for comment in subreddit.stream.comments():
+      self.comment_processor.process_comment(comment)
