@@ -9,14 +9,14 @@ class PoetryProcessor:
     syllables_count = cls.get_syllables_count(tokenized_text)
     syllables_total = sum(syllables_count)
 
-    candidates = {}
+    candidates = []
 
     if syllables_total == 0: return []
 
     for form in forms:
       result = form.construct(tokenized_text, syllables_count, syllables_total)
       if result:
-        candidates[form.name] = result
+        candidates.append(result)
 
     return candidates
 

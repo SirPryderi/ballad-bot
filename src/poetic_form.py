@@ -1,6 +1,6 @@
 import os
 from src.poetry_processor import PoetryProcessor
-
+from src.poem import Poem
 
 class PoeticForm:
   def __init__(self, name, verses):
@@ -46,7 +46,8 @@ class PoeticForm:
       verses_syllables = []
 
       word_index = 0
-      verses_count = syllables_total // self.syllables_count * self.verses_count
+      repetitions = syllables_total // self.syllables_count
+      verses_count = repetitions * self.verses_count
 
       for verse_index in range(verses_count):
         if verse_index != 0 and verse_index % self.verses_count == 0:
@@ -75,4 +76,4 @@ class PoeticForm:
       if failed:
         return False
 
-      return verses
+      return Poem(verses, form=self, form_repetition=repetitions)

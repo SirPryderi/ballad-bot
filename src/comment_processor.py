@@ -2,6 +2,7 @@ import re
 import logging
 from src.poetry_processor import PoetryProcessor
 from src.poetic_form import PoeticForm
+from src.poem import Poem
 
 
 class CommentProcessor:
@@ -20,27 +21,16 @@ class CommentProcessor:
     tokenized_text = preprocess_text.split()
     return tokenized_text
 
-  def write_poem(self, poem, author=None, form=None):
-    if author == None:
-      author = "anonymous"
-    
-    print("\n")
-
-    for verse in poem:
-      print(" ".join(verse))
-
-    # TODO: support things like "two tercets by"
-
-    print(f"\n — a {form} by {author}")
-
   def process_text(self, text, author=None):
     try:
       tokenized_text = self.tokenize_text(text)
-      generated_forms = PoetryProcessor.identify_form_from_syllables(tokenized_text, self.forms)
+      generated_poems = PoetryProcessor.identify_form_from_syllables(tokenized_text, self.forms)
 
-      if len(generated_forms) != 0:
-        for form, poem in generated_forms.items():
-          self.write_poem(poem, author, form)
+      if len(generated_poems) != 0:
+        for poem in generated_poems:
+          poem.author = author
+          print("\n")
+          print(poem)
 
     except Exception as ex:
       pass
