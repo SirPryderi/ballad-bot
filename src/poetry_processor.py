@@ -1,4 +1,5 @@
 import pronouncing as pr
+import math
 
 two_to_one_stress = {ord('2'): u'1'}
 
@@ -20,7 +21,7 @@ class PoetryProcessor:
   @staticmethod
   def get_syllables_count(tokenized_text):
     """Returns an array of with the same order of tokenized_text with each element being the word count"""
-    return [*map(lambda word: pr.syllable_count(pr.phones_for_word(word)[0]), tokenized_text)]
+    return [*map(get_syllables_count_in_word, tokenized_text)]
 
   @staticmethod
   def get_stresses(word):
@@ -77,3 +78,11 @@ class PoetryProcessor:
       return False
     # Return the iambic pentameter
     return tokenized_text
+
+
+def get_syllables_count_in_word(word):
+  phones = pr.phones_for_word(word)
+  if len(phones) > 0:
+    return pr.syllable_count(phones[0])
+  else:
+    return math.ceil(len(word) * 0.3)
