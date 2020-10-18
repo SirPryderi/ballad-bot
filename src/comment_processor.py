@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import re
 import logging
 from src.poetry_processor import PoetryProcessor
@@ -29,8 +31,11 @@ class CommentProcessor:
       for poem in generated_poems:
         poem.author = author
         PoemAnalyzer(poem).analyze()
+        if (poem.score) < 70:
+          continue
         print("\n")
         print(poem)
+        print(f"Score: {poem.score}")
         if poem.rhyme_count:
           print(f"Rhymes: {poem.rhyme_count} | {''.join(poem.rhyme_scheme)}")
 

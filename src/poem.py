@@ -4,6 +4,11 @@ class Poem:
     self.form = form
     self.form_repetition = form_repetition
 
+    self.rhyme_scheme = None
+    self.rhyme_count = None
+    self.score = None
+    self.verses_count = len([*filter(lambda v: v != "", verses)])
+
     if author == None:
       self.author = "anonymous"
     else:
