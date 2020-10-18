@@ -8,6 +8,8 @@ It is strongly inspired from [RIP](https://github.com/pmichel31415/reddit-iambic
 
 ## Running
 
+If you intend or running the bot, you first need to create a new `.env` file based on on `.example.env`.
+
 To run against a subreddit:
 
 ```sh
@@ -25,3 +27,10 @@ python main.py --test
 ## Requirements
 
 It requires Python 3.8 (newer might work) and the packages declared in `requirements.txt`.
+
+## See also
+
+Other (much cleverer) projects this one takes inspiration from. I don't know even anything about poetry. There, I've said it.
+
+- https://github.com/pmichel31415/reddit-iambic-pentameter
+- https://github.com/hyperreality/Poetry-Tools
