@@ -2,7 +2,7 @@ import re
 import logging
 from src.poetry_processor import PoetryProcessor
 from src.poetic_form import PoeticForm
-from src.poem import Poem
+from src.poem_analyzer import PoemAnalyzer
 
 
 class CommentProcessor:
@@ -28,12 +28,15 @@ class CommentProcessor:
 
       for poem in generated_poems:
         poem.author = author
+        PoemAnalyzer(poem).analyze()
         print("\n")
         print(poem)
+        if poem.rhyme_count:
+          print(f"Rhymes: {poem.rhyme_count} | {''.join(poem.rhyme_scheme)}")
 
     except Exception as ex:
       pass
-      # logging.error(logging.traceback.format_exc())
+      logging.error(logging.traceback.format_exc())
 
   def process_comment(self, comment):
     self.process_text(comment.body, f"u/{comment.author}")

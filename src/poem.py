@@ -16,6 +16,7 @@ class Poem:
     else:
       self.syllables_count = syllables_count
       self.syllables_total = syllables_total
+
   def __str__(self):
     output = []
 
