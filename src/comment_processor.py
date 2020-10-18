@@ -24,24 +24,22 @@ class CommentProcessor:
     return tokenized_text
 
   def process_text(self, text, author=None):
-    try:
-      tokenized_text = self.tokenize_text(text)
-      generated_poems = PoetryProcessor.identify_form_from_syllables(tokenized_text, self.forms)
+    tokenized_text = self.tokenize_text(text)
+    generated_poems = PoetryProcessor.identify_form_from_syllables(tokenized_text, self.forms)
 
-      for poem in generated_poems:
-        poem.author = author
-        PoemAnalyzer(poem).analyze()
-        if (poem.score) < 70:
-          continue
-        print("\n")
-        print(poem)
-        print(f"Score: {poem.score}")
-        if poem.rhyme_count:
-          print(f"Rhymes: {poem.rhyme_count} | {''.join(poem.rhyme_scheme)}")
-
-    except Exception as ex:
-      pass
-      logging.error(logging.traceback.format_exc())
+    for poem in generated_poems:
+      poem.author = author
+      PoemAnalyzer(poem).analyze()
+      if (poem.score) < 70:
+        continue
+      print("\n")
+      print(poem)
+      print(f"Score: {poem.score}")
+      if poem.rhyme_count:
+        print(f"Rhymes: {poem.rhyme_count} | {''.join(poem.rhyme_scheme)}")
 
   def process_comment(self, comment):
-    self.process_text(comment.body, f"u/{comment.author}")
+    try:
+      self.process_text(comment.body, f"u/{comment.author}")
+    except Exception as ex:
+      logging.error(logging.traceback.format_exc())
