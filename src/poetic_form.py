@@ -79,4 +79,4 @@ class PoeticForm:
     if failed:
       return False
 
-    return Poem(verses, form=self, form_repetition=repetitions)
+    return Poem(verses, form=self, form_repetition=repetitions, syllables_count=syllables_count, syllables_total=syllables_total)

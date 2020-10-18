@@ -1,5 +1,5 @@
 class Poem:
-  def __init__(self, verses, form=None, form_repetition=1, author=None):
+  def __init__(self, verses, form=None, form_repetition=1, author=None, syllables_count=None, syllables_total=None):
     self.verses = verses
     self.form = form
     self.form_repetition = form_repetition
@@ -9,6 +9,13 @@ class Poem:
     else:
       self.author = author
 
+    if syllables_count == None:
+      # normally passed in for performance
+      # TODO: add a new method to analyze the syllables in a poem
+      pass
+    else:
+      self.syllables_count = syllables_count
+      self.syllables_total = syllables_total
   def __str__(self):
     output = []
 
