@@ -15,6 +15,7 @@ class PoemAnalyzer:
     self.poem.rhyme_count = 0
     rhyme_parts = []
     rhyme_scheme = [''] * len(self.poem.verses)
+    rhyme_ordinal = 0
 
     for i, verse in enumerate(self.poem.verses):
       if verse == "":
@@ -43,18 +44,24 @@ class PoemAnalyzer:
               i_word = self.poem.verses[i][-1]
               j_word = self.poem.verses[j][-1]
 
+              if len(rhyme_scheme[i]) != 0:
+                letter = rhyme_scheme[i]
+              else:
+                rhyme_ordinal += 1
+                letter = self.cardinal_n_to_ordinal_letter(rhyme_ordinal)
+              rhyme_scheme[i] = letter
+              rhyme_scheme[j] = letter
+
               if i_word == j_word:
                 continue
 
               self.poem.rhyme_count += 1
-              letter = self.cardinal_n_to_ordinal_letter(self.poem.rhyme_count)
-              rhyme_scheme[i] = letter
-              rhyme_scheme[j] = letter
 
-      # fills empty cells in the rhyme scheme
-      for i, letter in enumerate(rhyme_scheme):
-        if letter == '':
-          rhyme_scheme[i] = '–'
+    # fills empty cells in the rhyme scheme
+    for i, letter in enumerate(rhyme_scheme):
+      if letter == '':
+        rhyme_ordinal += 1
+        rhyme_scheme[i] = self.cardinal_n_to_ordinal_letter(rhyme_ordinal).lower()
 
       self.poem.rhyme_scheme = rhyme_scheme
 
@@ -64,6 +71,6 @@ class PoemAnalyzer:
   def score(self):
     pass
 
-  @staticmethod
+  @ staticmethod
   def cardinal_n_to_ordinal_letter(number: int):
     return chr(ord('@')+number)
