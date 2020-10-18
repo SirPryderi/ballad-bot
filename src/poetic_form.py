@@ -53,7 +53,7 @@ class PoeticForm:
     verses_count = repetitions * self.verses_count
 
     for verse_index in range(verses_count):
-      if verse_index != 0 and verse_index % self.verses_count == 0:
+      if verse_index != 0 and verse_index % self.verses_count == 0 and self.verses_count != 1:
         verses.append("")
       verse_index = (verse_index % self.verses_count)
 
