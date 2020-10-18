@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 import re
-import logging
 from src.poetry_processor import PoetryProcessor
 from src.poetic_form import PoeticForm
 from src.poem_analyzer import PoemAnalyzer
@@ -37,9 +36,3 @@ class CommentProcessor:
       print(f"Score: {poem.score}")
       if poem.rhyme_count:
         print(f"Rhymes: {poem.rhyme_count} | {''.join(poem.rhyme_scheme)}")
-
-  def process_comment(self, comment):
-    try:
-      self.process_text(comment.body, f"u/{comment.author}")
-    except Exception as ex:
-      logging.error(logging.traceback.format_exc())
