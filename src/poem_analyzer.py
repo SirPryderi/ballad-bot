@@ -1,3 +1,4 @@
+import math
 from src.poem import Poem
 import pronouncing as pr
 
@@ -72,7 +73,8 @@ class PoemAnalyzer:
     length_score = self.poem.syllables_total
     rhymes_score = self.poem.rhyme_count / self.poem.verses_count * 200
     repetition_score = -self.poem.form_repetition  # demote excessively repeated forms in favour of longer forms
-    self.poem.score = length_score + rhymes_score + repetition_score
+    total = length_score + rhymes_score + repetition_score
+    self.poem.score = round(total)
     pass
 
   @ staticmethod
