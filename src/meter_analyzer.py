@@ -66,6 +66,7 @@ class MeterAnalyer:
   @classmethod
   def follows_meter_style(cls, tokenized_text, meter_style, allow_feminine_rhyme=True):
     pattern = ""
+    foot = cls.METRES_STYLES[meter_style]
 
     if len(tokenized_text) == 0:
       return False
@@ -75,7 +76,7 @@ class MeterAnalyer:
       # Start looping over possible stress patterns of current word
       found_pattern = False
       for stress_pattern in cls.get_stresses(word):
-        new_pattern = cls.repeat_pattern_to_length(cls.METRES_STYLES[meter_style], len(pattern) + len(stress_pattern))
+        new_pattern = cls.repeat_pattern_to_length(foot, len(pattern) + len(stress_pattern))
         # check whether the stress patterns match
         if pattern + stress_pattern == new_pattern:
           pattern = new_pattern
@@ -84,11 +85,20 @@ class MeterAnalyer:
       if not found_pattern:
         return False
 
-    # retrieves the foot length (tetrameter, pentameter, etc.)
-    feet_count = len(pattern) // len(cls.METRES_STYLES[meter_style])
+    if len(pattern) % len(foot):
+      # not enough syllables to complete the foot pattern
+      # TODO: support feminine rhymes (at least for iambic pentameter)
+      return False
 
+    return cls.get_pattern_name(meter_style, pattern)
+
+  @classmethod
+  def get_pattern_name(cls, meter_style, pattern):
+    foot = cls.METRES_STYLES[meter_style]
+    # retrieves the foot length (tetrameter, pentameter, etc.)
+    feet_count = len(pattern) // len(foot)
     # foot style + foot length (e.g. ['iambic', 'pentameter')
-    return [meter_style, cls.METRES_NAMES[feet_count]]
+    return (meter_style, cls.METRES_NAMES[feet_count])
 
   @staticmethod
   def repeat_pattern_to_length(s, wanted):
