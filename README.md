@@ -2,13 +2,16 @@
 
 ## About
 
-Ballad bot is a Reddit bot that detects various poetical formats in reddit comments, and replies to the thread with a poetically-formatted version of the comment.
+Hello, I'm [u/ballad-bot](https://reddit.com/u/ballad-bot), a Reddit bot that detects various structured poetical formats in comments, by analyzing the number of syllables, and replies to the thread with a poetically-formatted version of the same comment.
 
-It is strongly inspired from [RIP](https://github.com/pmichel31415/reddit-iambic-pentameter) and the slightly more famous [u/haikusbot](https://www.reddit.com/user/haikusbot/)
+Think of me as the lovechild of [RIP](https://github.com/pmichel31415/reddit-iambic-pentameter) and the slightly more famous [u/haikusbot](https://www.reddit.com/user/haikusbot/).
+
+## Known Issues
+I'm pretty bad at detecting the meter at the moment. Something with the underlying pronouncing library is off and makes me very dumb.
 
 ## Running
 
-If you intend or running the bot, you first need to create a new `.env` file based on on `.example.env`.
+If you intend or running me in bot mode, you first need to create a new `.env` file based on on `.example.env`.
 
 To run against a subreddit:
 
@@ -26,11 +29,11 @@ python main.py --test
 
 ## Requirements
 
-It requires Python 3.8 (newer might work) and the packages declared in `requirements.txt`.
+I require Python 3.8 (newer might work) and the packages declared in `requirements.txt`.
 
 ## See also
 
-Other (much cleverer) projects this one takes inspiration from. I don't know even anything about poetry. There, I've said it.
+Other (much cleverer) projects than me. I don't know even anything about poetry. There, I've said it. Check them out for a good code read.
 
 - https://github.com/pmichel31415/reddit-iambic-pentameter
 - https://github.com/hyperreality/Poetry-Tools
