@@ -60,10 +60,10 @@ class RedditBot:
         return
 
       best_poem = max(candidates, key=lambda p: p.score)
-      if best_poem.score > 100:
-        self.post_reply(best_poem, comment)
       if best_poem.score > 140:
         self.post_to_dedicated_subreddit(best_poem, comment)
+      if best_poem.score > 100:
+        self.post_reply(best_poem, comment)
 
     except Exception as ex:
       logging.error(logging.traceback.format_exc())
