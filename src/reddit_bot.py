@@ -12,7 +12,7 @@ class RedditBot:
     self.comment_processor = CommentProcessor()
 
     self.reddit = praw.Reddit(
-        user_agent=os.getenv("USERNAME"),
+        user_agent=os.getenv("USER_AGENT"),
         client_id=os.getenv("CLIENT_ID"),
         client_secret=os.getenv("CLIENT_SECRET"),
         username=os.getenv("USERNAME"),
