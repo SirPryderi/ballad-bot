@@ -28,6 +28,8 @@ class Poem:
       self.syllables_count = syllables_count
       self.syllables_total = syllables_total
 
+    self.title = ' '.join(self.verses[0]).capitalize()
+
   def __str__(self):
     output = []
 

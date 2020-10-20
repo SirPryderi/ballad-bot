@@ -1,3 +1,5 @@
+from praw.models.reddit.comment import Comment
+from src.poem import Poem
 import praw
 import os
 import logging
@@ -20,8 +22,9 @@ class RedditBot:
     )
 
     self.user_blacklist = [os.getenv("USERNAME"), "AutoModerator"]
+    self.dedicated_subreddit = self.reddit.subreddit("ballad_bot_playground")
 
-  def monitor_reddit(self, subreddit_name):
+  def monitor_reddit(self, subreddit_name: str):
     subreddit = self.reddit.subreddit(subreddit_name)
 
     print(f"Monitoring comments on r/{subreddit_name}")
@@ -31,8 +34,36 @@ class RedditBot:
         continue
       self.process_comment(comment)
 
-  def process_comment(self, comment):
+  def post_to_dedicated_subreddit(self, poem: Poem, comment: Comment):
+    selftext = [
+        f"{poem}",
+        "---",
+        f"rhyme scheme: {''.join(poem.rhyme_scheme)} | score: {poem.score} | [see thread](https://reddit.com{comment.permalink})"
+    ]
+    selftext = "\n\n".join(selftext)
+    self.dedicated_subreddit.submit(title=poem.title, selftext=selftext)
+
+  def post_reply(self, poem: Poem, comment: Comment):
+    body = [
+        f"{poem}",
+        "---",
+        f"rhyme scheme: {''.join(poem.rhyme_scheme)} | score: {poem.score}"
+    ]
+    body = "\n\n".join(body)
+    comment.reply(body)
+
+  def process_comment(self, comment: Comment):
     try:
-      self.comment_processor.process_text(comment.body, f"u/{comment.author}")
+      candidates = self.comment_processor.process_text(comment.body, author=f"u/{comment.author}")
+
+      if len(candidates) == 0:
+        return
+
+      best_poem = max(candidates, key=lambda p: p.score)
+      if best_poem.score > 100:
+        self.post_reply(best_poem, comment)
+      if best_poem.score > 140:
+        self.post_to_dedicated_subreddit(best_poem, comment)
+
     except Exception as ex:
       logging.error(logging.traceback.format_exc())

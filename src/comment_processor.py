@@ -22,18 +22,24 @@ class CommentProcessor:
     tokenized_text = preprocess_text.split()
     return tokenized_text
 
+  @staticmethod
+  def print_poem_info(poem):
+    print("\n")
+    print(poem)
+    print(f"Score: {poem.score}")
+    print(f"Meter: {poem.verses_meter}")
+    if poem.rhyme_count:
+      print(f"Rhymes: {poem.rhyme_count} | {''.join(poem.rhyme_scheme)}")
+
   def process_text(self, text, author=None):
     tokenized_text = self.tokenize_text(text)
     generated_poems = PoetryProcessor.identify_form_from_syllables(tokenized_text, self.forms)
-
+    # Let's face it: I don't know how to use generators
+    candidates = []
     for poem in generated_poems:
       poem.author = author
       PoemAnalyzer(poem).analyze()
-      if (poem.score) < 100:
-        continue
-      print("\n")
-      print(poem)
-      print(f"Score: {poem.score}")
-      print(f"Meter: {poem.verses_meter}")
-      if poem.rhyme_count:
-        print(f"Rhymes: {poem.rhyme_count} | {''.join(poem.rhyme_scheme)}")
+      if (poem.score) > 100:
+        self.print_poem_info(poem)
+      candidates.append(poem)
+    return candidates
