@@ -1,3 +1,8 @@
+import inflect
+
+p = inflect.engine()
+
+
 class Poem:
   def __init__(self, verses, form=None, form_repetition=1, author=None, syllables_count=None, syllables_total=None):
     self.verses = verses
@@ -27,10 +32,15 @@ class Poem:
     output = []
 
     for verse in self.verses:
-      output.append(" ".join(verse).capitalize())
+      output.append(" ".join(verse).capitalize() + "  ")
 
-    # TODO: support things like "two tercets by"
+    if self.form_repetition == 1:
+      number = "a"
+      form = self.form.name
+    else:
+      number = p.number_to_words(self.form_repetition)
+      form = p.plural_noun(self.form.name)
 
-    output.append(f"\n — a {self.form.name} by {self.author}")
+    output.append(f"\n — {number} {form} by {self.author}")
 
     return "\n".join(output)
