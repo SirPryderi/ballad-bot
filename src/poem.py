@@ -8,6 +8,7 @@ class Poem:
     self.rhyme_count = None
     self.score = None
     self.verses_count = len([*filter(lambda v: v != "", verses)])
+    self.verses_meter = None
 
     if author == None:
       self.author = "anonymous"

@@ -29,10 +29,11 @@ class CommentProcessor:
     for poem in generated_poems:
       poem.author = author
       PoemAnalyzer(poem).analyze()
-      if (poem.score) < 70:
+      if (poem.score) < 120:
         continue
       print("\n")
       print(poem)
       print(f"Score: {poem.score}")
+      print(f"Meter: {poem.verses_meter}")
       if poem.rhyme_count:
         print(f"Rhymes: {poem.rhyme_count} | {''.join(poem.rhyme_scheme)}")

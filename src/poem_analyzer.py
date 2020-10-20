@@ -1,4 +1,5 @@
 import math
+from src.meter_analyzer import MeterAnalyer
 from src.poem import Poem
 import pronouncing as pr
 
@@ -9,7 +10,7 @@ class PoemAnalyzer:
 
   def analyze(self):
     self.rhyme_scheme()
-    self.metre()
+    self.meter()
     self.score()
 
   def rhyme_scheme(self):
@@ -66,8 +67,8 @@ class PoemAnalyzer:
 
       self.poem.rhyme_scheme = rhyme_scheme
 
-  def metre(self):
-    pass
+  def meter(self):
+    self.poem.verses_meter = [*map(lambda v: MeterAnalyer.get_meter(v), self.poem.verses)]
 
   def score(self):
     length_score = self.poem.syllables_total
