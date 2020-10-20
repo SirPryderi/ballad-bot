@@ -53,8 +53,14 @@ class PoeticForm:
     verses_count = repetitions * self.verses_count
 
     for verse_index in range(verses_count):
-      if verse_index != 0 and verse_index % self.verses_count == 0 and self.verses_count != 1:
-        verses.append("")
+      if verse_index != 0 and verse_index % self.verses_count == 0:
+        if self.verses_count != 1:
+          verses.append("")
+        elif len(verses) > 4 and verse_index % 3 == 0:
+          verses.append("")
+        elif len(verses) > 9 and verse_index % 4 == 0:
+          verses.append("")
+
       verse_index = (verse_index % self.verses_count)
 
       expected_syllables_count = len(self.verses[verse_index])
