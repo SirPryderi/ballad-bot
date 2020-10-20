@@ -1,4 +1,3 @@
-import math
 from src.meter_analyzer import MeterAnalyer
 from src.poem import Poem
 import pronouncing as pr
@@ -71,12 +70,21 @@ class PoemAnalyzer:
     self.poem.verses_meter = [*map(lambda v: MeterAnalyer.get_meter(v), self.poem.verses)]
 
   def score(self):
-    length_score = self.poem.syllables_total
+    unique_words_count = len(self.unique_words())
+    length_score = unique_words_count * 2
+    if unique_words_count > 60:  # demote poems that are too long
+      length_score = length_score - ((unique_words_count - 60) * 3)
     rhymes_score = self.poem.rhyme_count / self.poem.verses_count * 200
     repetition_score = -self.poem.form_repetition  # demote excessively repeated forms in favour of longer forms
     total = length_score + rhymes_score + repetition_score
     self.poem.score = round(total)
-    pass
+
+  def unique_words(self):
+    unique_words = set()
+    for verse in self.poem.verses:
+      for word in verse:
+        unique_words.add(word)
+    return unique_words
 
   @ staticmethod
   def cardinal_n_to_ordinal_letter(number: int):

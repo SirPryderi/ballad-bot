@@ -29,7 +29,7 @@ class CommentProcessor:
     for poem in generated_poems:
       poem.author = author
       PoemAnalyzer(poem).analyze()
-      if (poem.score) < 120:
+      if (poem.score) < 100:
         continue
       print("\n")
       print(poem)
