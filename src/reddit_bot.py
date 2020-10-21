@@ -21,7 +21,8 @@ class RedditBot:
         password=os.getenv("PASSWORD")
     )
 
-    self.user_blacklist = [os.getenv("USERNAME"), "AutoModerator"]
+    self.username = os.getenv("USERNAME")
+    self.user_blacklist = [self.username, "AutoModerator"]
     self.dedicated_subreddit = self.reddit.subreddit("ballad_bot_playground")
 
   def monitor_reddit(self, subreddit_name: str):
@@ -32,7 +33,10 @@ class RedditBot:
     for comment in subreddit.stream.comments():
       if comment.author in self.user_blacklist:
         continue
-      self.process_comment(comment)
+      elif f"!{self.username}" in comment.body:
+        self.process_command(comment)
+      else:
+        self.process_comment(comment)
 
   def post_to_dedicated_subreddit(self, poem: Poem, comment: Comment):
     print("[->] Posting to dedicated subreddit...")
@@ -48,10 +52,21 @@ class RedditBot:
     body = [
         f"{poem.to_markdown()}",
         "---",
-        f"rhyme scheme: {''.join(poem.rhyme_scheme)} | score: {poem.score}"
+        f"rhyme scheme: {''.join(poem.rhyme_scheme)} | score: {poem.score} | reply `!{self.username} delete` to remove"
     ]
     body = "\n\n".join(body)
     comment.reply(body)
+
+  def process_command(self, comment: Comment):
+    parent = comment.parent()
+    command = comment.body.split()
+    if len(command) < 2:
+      return
+
+    if command[1].lower() == "delete":
+      if parent.author == self.username:
+        print("[->] Deleting object as requested by user...")
+        parent.delete()
 
   def process_comment(self, comment: Comment):
     try:
