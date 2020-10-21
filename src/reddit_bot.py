@@ -40,7 +40,7 @@ class RedditBot:
         "---",
         f"rhyme scheme: {''.join(poem.rhyme_scheme)} | score: {poem.score} | [see thread](https://reddit.com{comment.permalink})"
     ]
-    selftext = "\n\n".join(selftext)
+    selftext = "&#010;  \n".join(selftext)
     self.dedicated_subreddit.submit(title=poem.title, selftext=selftext)
 
   def post_reply(self, poem: Poem, comment: Comment):
@@ -49,7 +49,7 @@ class RedditBot:
         "---",
         f"rhyme scheme: {''.join(poem.rhyme_scheme)} | score: {poem.score}"
     ]
-    body = "\n\n".join(body)
+    body = "&#010;  \n".join(body)
     comment.reply(body)
 
   def process_comment(self, comment: Comment):

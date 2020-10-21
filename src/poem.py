@@ -30,19 +30,22 @@ class Poem:
 
     self.title = ' '.join(self.verses[0]).capitalize()
 
-  def __str__(self):
+  def formatted_lines(self):
     output = []
-
     for verse in self.verses:
-      output.append(" ".join(verse).capitalize() + "  ")
-
+      output.append(" ".join(verse).capitalize())
     if self.form_repetition == 1:
       number = "a"
       form = self.form.name
     else:
       number = p.number_to_words(self.form_repetition)
       form = p.plural_noun(self.form.name)
+    output.append("")
+    output.append(f" — {number} {form} by {self.author}")
+    return output
 
-    output.append(f"\n — {number} {form} by {self.author}")
+  def to_markdown(self):
+    return "&#010;  \n".join(self.formatted_lines())
 
-    return "\n".join(output)
+  def __str__(self):
+    return "\n".join(self.formatted_lines())
