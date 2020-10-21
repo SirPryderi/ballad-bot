@@ -46,6 +46,8 @@ class RedditBot:
         f"rhyme scheme: {''.join(poem.rhyme_scheme)} | score: {poem.score} | [see thread](https://reddit.com{comment.permalink})"
     ]
     selftext = "\n\n".join(selftext)
+    nsfw = comment.submission.over_18
+    self.dedicated_subreddit.submit(title=poem.title, selftext=selftext, nsfw=nsfw)
 
   def post_reply(self, poem: Poem, comment: Comment):
     print("[->] Replying to original comment...")
@@ -76,9 +78,9 @@ class RedditBot:
         return
 
       best_poem = max(candidates, key=lambda p: p.score)
-      if best_poem.score > 140:
+      if best_poem.score > 150:
         self.post_to_dedicated_subreddit(best_poem, comment)
-      if best_poem.score > 100:
+      if best_poem.score > 140:
         self.post_reply(best_poem, comment)
 
     except Exception as ex:
