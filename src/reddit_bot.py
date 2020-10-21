@@ -35,21 +35,22 @@ class RedditBot:
       self.process_comment(comment)
 
   def post_to_dedicated_subreddit(self, poem: Poem, comment: Comment):
+    print("[->] Posting to dedicated subreddit...")
     selftext = [
-        f"{poem}",
+        f"{poem.to_markdown()}",
         "---",
         f"rhyme scheme: {''.join(poem.rhyme_scheme)} | score: {poem.score} | [see thread](https://reddit.com{comment.permalink})"
     ]
-    selftext = "&#010;  \n".join(selftext)
-    self.dedicated_subreddit.submit(title=poem.title, selftext=selftext)
+    selftext = "\n\n".join(selftext)
 
   def post_reply(self, poem: Poem, comment: Comment):
+    print("[->] Replying to original comment...")
     body = [
-        f"{poem}",
+        f"{poem.to_markdown()}",
         "---",
         f"rhyme scheme: {''.join(poem.rhyme_scheme)} | score: {poem.score}"
     ]
-    body = "&#010;  \n".join(body)
+    body = "\n\n".join(body)
     comment.reply(body)
 
   def process_comment(self, comment: Comment):
